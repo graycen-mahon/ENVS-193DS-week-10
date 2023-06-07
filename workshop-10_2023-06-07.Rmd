@@ -60,3 +60,37 @@ salamanders %>%
   ggpairs()
 ```
 
+## build linear models:
+
+```{r}
+# linear model, we know this is wrong
+salmod1 <- lm(count ~ cover + mined + spp, data = salamanders)
+
+# generalized linear model with Poisson distribution
+salmod2 <- glm(count ~ cover + mined + spp, data = salamanders, family = "poisson")
+salmod2.a <- glm(count ~ cover + mined + spp, data = salamanders, family = "poisson")
+
+# generalized linear model with negative binomial distribution
+salmod3 <- glm.nb(count ~ cover + mined + spp, data = salamanders)
+salmod3.a <- glmmTMB(count ~ cover + mined + spp, data = salamanders, family = "nbinom2")
+
+# generalized linear model with Poisson distribution and random effect of site
+salmod4 <- glmer(count ~ cover + mined  + spp + (1|site), data = salamanders, family = "poisson")
+salmod4.a <- glmmTMB(count ~ cover + mined  + spp + (1|site), data = salamanders, family = "poisson")
+
+# generalized linear model with negative binomial distribution and random effect of site
+salmod5 <- glmer.nb(count ~ cover + mined  + spp + (1|site), data = salamanders)
+salmod5.a <- glmmTMB(count ~ cover + mined + spp + (1|site), data = salamanders, family = "nbinom2")
+```
+
+## Look at residuals
+
+```{r}
+# check diagnostics
+plot(simulateResiduals(salmod1)) # bad
+```
+
+```{r}
+plot(simulateResiduals(salmod2)) # bad
+```
+
