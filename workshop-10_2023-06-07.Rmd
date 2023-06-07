@@ -1,0 +1,62 @@
+---
+title: "workshop-10_2023-06-07"
+author: "Graycen Mahon"
+date: "2023-06-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading in Packages
+
+```{r}
+# model packages
+library(MASS) # have to read this in before tidyverse 
+library(lme4)
+library(glmmTMB) # ok if you don't have this - just comment it out
+
+# diagnostics and model info
+library(DHARMa)
+library(MuMIn)
+library(ggeffects)
+library(lmtest)
+library(broom)
+
+# general usage
+library(tidyverse)
+library(here)
+library(naniar)
+library(skimr)
+library(GGally)
+library(flextable)
+```
+
+## Reading in the data:
+
+```{r}
+salamanders <- read_csv(here("data", "salamanders.csv"))
+```
+
+## Exploring the Dataset:
+
+```{r histogram-of-counts}
+ggplot(salamanders, aes(x = count)) +
+  geom_histogram(bins = 17)
+```
+
+```{r missing-data-visualization}
+gg_miss_var(salamanders) # nothing missing!
+```
+
+```{r skimming-the-data}
+skim(salamanders)
+```
+
+```{r}
+salamanders %>% 
+  select(!site) %>% 
+  ggpairs()
+```
+
